@@ -1,6 +1,6 @@
 # Skill Boost: Data Modeling Techniques
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new?repo=YOUR_REPO_HERE)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new?repo=datamindedacademy/skill-boost-data-modeling)
 
 ## Overview
 

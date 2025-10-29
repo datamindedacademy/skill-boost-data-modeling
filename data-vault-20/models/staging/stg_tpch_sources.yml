@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: tpch
+    description: TPC-H benchmark data from DuckDB extension
+    tables:
+      - name: customer
+      - name: orders
+      - name: lineitem
+      - name: part
+      - name: supplier
+      - name: nation
+      - name: region

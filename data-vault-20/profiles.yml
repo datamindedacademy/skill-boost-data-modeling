@@ -1,0 +1,7 @@
+data_vault_20:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: data_vault_20.duckdb
+      threads: 4

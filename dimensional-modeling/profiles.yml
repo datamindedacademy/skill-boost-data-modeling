@@ -1,0 +1,7 @@
+dimensional_modeling:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: dimensional_modeling.duckdb
+      threads: 4

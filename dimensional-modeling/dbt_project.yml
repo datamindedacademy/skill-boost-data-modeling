@@ -1,0 +1,23 @@
+name: 'dimensional_modeling'
+version: '1.0.0'
+config-version: 2
+
+profile: 'dimensional_modeling'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  dimensional_modeling:
+    staging:
+      +materialized: view
+    dimensions:
+      +materialized: table
+    facts:
+      +materialized: table

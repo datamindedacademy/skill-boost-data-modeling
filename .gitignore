@@ -1,0 +1,46 @@
+# dbt
+target/
+dbt_packages/
+logs/
+dbt_modules/
+
+# DuckDB databases
+*.duckdb
+*.duckdb.wal
+*.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints
+
+# Environment
+.env
+.env.local
+
+# Temporary files
+*.tmp
+init_tpch.sql
+
+# OS
+Thumbs.db

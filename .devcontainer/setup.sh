@@ -19,6 +19,7 @@ uv sync
 
 # Add venv activation to bashrc
 echo 'source /workspaces/skill-boost-data-modeling/.venv/bin/activate' >> ~/.bashrc
+source ~/.bashrc
 
 # Initialize TPC-H data for each project
 echo "🗄️  Initializing TPC-H data..."

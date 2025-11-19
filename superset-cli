@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# Colors for output
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPTS_DIR="$SCRIPT_DIR/.superset-scripts"
+
+# Function to display usage information
+show_usage() {
+    echo -e "${BLUE}Superset CLI - Manage Apache Superset for DuckDB data models${NC}"
+    echo ""
+    echo "Usage: ./superset-cli <command>"
+    echo ""
+    echo "Commands:"
+    echo -e "  ${GREEN}setup${NC}     - Set up Apache Superset with DuckDB support"
+    echo -e "  ${GREEN}start${NC}     - Start Superset services"
+    echo -e "  ${GREEN}stop${NC}      - Stop Superset services"
+    echo -e "  ${GREEN}connect${NC}   - Add DuckDB database connections to Superset"
+    echo -e "  ${GREEN}help${NC}      - Show this help message"
+    echo ""
+}
+
+# Check if a command was provided
+if [ $# -eq 0 ]; then
+    show_usage
+    exit 1
+fi
+
+COMMAND="$1"
+
+# Execute the appropriate command
+case "$COMMAND" in
+    setup)
+        bash "$SCRIPTS_DIR/setup_superset.sh"
+        ;;
+    start)
+        bash "$SCRIPTS_DIR/start_superset.sh"
+        ;;
+    stop)
+        bash "$SCRIPTS_DIR/stop_superset.sh"
+        ;;
+    connect)
+        bash "$SCRIPTS_DIR/add_duckdb_connections.sh"
+        ;;
+    help)
+        show_usage
+        ;;
+    *)
+        echo -e "${RED}Error: Unknown command '$COMMAND'${NC}"
+        echo ""
+        show_usage
+        exit 1
+        ;;
+esac

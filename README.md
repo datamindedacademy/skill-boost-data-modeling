@@ -80,11 +80,39 @@ Navigate to the `questions/` directory to find business questions to answer usin
 - **Flexibility**: How easy is it to answer new questions?
 - **Maintainability**: How would schema changes impact the model?
 
+## Visualizing with Apache Superset
+
+Explore your data models visually using Apache Superset with automatic DuckDB connections to all three modeling approaches.
+
+### Quick Start
+
+```bash
+# One-time setup (first time only)
+./superset-cli setup
+
+# Start Superset
+./superset-cli start
+
+# Wait 1-2 minutes, then access at http://localhost:8088
+# Login: admin / admin
+
+# Add DuckDB database connections (if not already added)
+./superset-cli connect
+
+# Stop Superset when done
+./superset-cli stop
+```
+
+Once connected, you can query and visualize data from all three models
+
+**Tip:** Run `./superset-cli help` to see all available commands.
+
 ## Additional Resources
 
 - [dbt Documentation](https://docs.getdbt.com/)
 - [DuckDB Documentation](https://duckdb.org/docs/)
 - [TPC-H Benchmark](http://www.tpc.org/tpch/)
+- [Apache Superset Documentation](https://superset.apache.org/docs/intro)
 
 ## Contributing
 

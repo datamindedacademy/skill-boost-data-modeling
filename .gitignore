@@ -45,4 +45,7 @@ init_tpch.sql
 # OS
 Thumbs.db
 
+# Apache Superset
+superset/
+
 .user.yml

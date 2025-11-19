@@ -8,6 +8,11 @@ echo "📦 Installing uv..."
 curl -LsSf https://astral.sh/uv/install.sh | sh
 export PATH="$HOME/.local/bin:$PATH"
 
+# Install DuckDB
+echo "📦 Installing DuckDB..."
+curl https://install.duckdb.org | sh
+echo 'PATH='/home/vscode/.duckdb/cli/latest':$PATH' >> ~/.bashrc
+
 # Install dependencies with uv
 echo "📦 Installing dependencies with uv..."
 uv sync

@@ -80,23 +80,6 @@ Navigate to the `questions/` directory to find business questions to answer usin
 - **Flexibility**: How easy is it to answer new questions?
 - **Maintainability**: How would schema changes impact the model?
 
-## TPC-H Dataset
-
-The TPC-H dataset simulates a wholesale supplier database with:
-- **Customers**: Customer information
-- **Orders**: Order header information
-- **LineItem**: Individual items in orders
-- **Part**: Parts/products catalog
-- **Supplier**: Supplier information
-- **PartSupp**: Parts supplied by suppliers with pricing
-- **Nation**: Nations/countries
-- **Region**: Geographic regions
-
-Scale factor 0.1 generates approximately:
-- 15,000 customers
-- 150,000 orders
-- 600,000 line items
-
 ## Additional Resources
 
 - [dbt Documentation](https://docs.getdbt.com/)

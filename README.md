@@ -68,7 +68,7 @@ source .venv/bin/activate
 Each modeling approach directory contains detailed information about the philosophy, benefits, drawbacks, and references. Explore each to understand the trade-offs:
 
 - **dimensional-modeling/** - Star schema with facts and dimensions (Kimball approach)
-- **data-vault-20/** - Flexible, auditable enterprise warehouse with hubs, links, and satellites
+- **data-vault-20/** - "Flexible", auditable enterprise warehouse with hubs, links, and satellites
 - **one-big-table/** - Fully denormalized single table approach
 
 ## Training Exercises

@@ -44,3 +44,5 @@ init_tpch.sql
 
 # OS
 Thumbs.db
+
+.user.yml

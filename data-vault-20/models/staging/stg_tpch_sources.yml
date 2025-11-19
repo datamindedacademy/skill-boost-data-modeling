@@ -3,6 +3,7 @@ version: 2
 sources:
   - name: tpch
     description: TPC-H benchmark data from DuckDB extension
+    schema: main
     tables:
       - name: customer
       - name: orders

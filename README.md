@@ -37,7 +37,7 @@ The setup automatically:
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/datamindedacademy/skill-boost-data-modeling
 cd skill-boost-data-modeling
 
 # Install uv

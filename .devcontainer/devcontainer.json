@@ -16,7 +16,7 @@
         "evidence-dev.sqltools-duckdb-driver"
       ],
       "settings": {
-        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.defaultInterpreterPath": "${containerWorkspaceFolder}/.venv/bin/python",
         "python.linting.enabled": true,
         "python.linting.pylintEnabled": false,
         "python.formatting.provider": "black",

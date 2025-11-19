@@ -16,19 +16,14 @@ with source as (
         l_receiptdate as receipt_date,
         l_shipinstruct as ship_instruct,
         l_shipmode as ship_mode,
-        l_comment as comment,
+        l_comment as 'comment',
         current_timestamp as load_date,
         'TPCH' as record_source
     from {{ source('tpch', 'lineitem') }}
 )
 
 select
-    md5(concat(
-        md5(cast(order_key as varchar)),
-        md5(cast(part_key as varchar)),
-        md5(cast(supplier_key as varchar)),
-        cast(line_number as varchar)
-    )) as lineitem_hashkey,
+    -- Simple column references first
     load_date,
     quantity,
     extended_price,
@@ -43,6 +38,13 @@ select
     ship_mode,
     comment,
     record_source,
+    -- Calculations and aggregates last
+    md5(concat(
+        md5(cast(order_key as varchar)),
+        md5(cast(part_key as varchar)),
+        md5(cast(supplier_key as varchar)),
+        cast(line_number as varchar)
+    )) as lineitem_hashkey,
     md5(concat(
         coalesce(cast(quantity as varchar), ''),
         coalesce(cast(extended_price as varchar), ''),

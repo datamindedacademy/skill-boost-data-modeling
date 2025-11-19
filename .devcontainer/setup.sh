@@ -3,10 +3,17 @@ set -e
 
 echo "🚀 Setting up Data Modeling Skill Boost environment..."
 
-# Install dbt-duckdb
-echo "📦 Installing dbt-duckdb..."
-pip install --upgrade pip
-pip install dbt-duckdb
+# Install uv
+echo "📦 Installing uv..."
+curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.local/bin:$PATH"
+
+# Install dependencies with uv
+echo "📦 Installing dependencies with uv..."
+uv sync
+
+# Add venv activation to bashrc
+echo 'source /workspaces/skill-boost-data-modeling/.venv/bin/activate' >> ~/.bashrc
 
 # Initialize TPC-H data for each project
 echo "🗄️  Initializing TPC-H data..."

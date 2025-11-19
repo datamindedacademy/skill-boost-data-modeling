@@ -2,6 +2,30 @@
 
 This dbt project implements a Data Vault 2.0 model with hubs, links, and satellites.
 
+## Philosophy
+
+Create a flexible, auditable, and scalable enterprise data warehouse that preserves history. Data Vault separates business keys (hubs), relationships (links), and descriptive attributes (satellites) to enable maximum flexibility and auditability.
+
+## Benefits
+
+- Highly flexible and adaptable to change
+- Complete historical tracking
+- Parallel loading capabilities
+- Audit trail built-in
+
+## Drawbacks
+
+- More complex queries (many joins required)
+- Steeper learning curve
+- Need business vault or mart layer for BI tools
+- More tables to manage
+
+## References
+
+- [Building a Scalable Data Warehouse with Data Vault 2.0](https://danlinstedt.com/) by Dan Linstedt
+- [Data Vault 2.0 Overview](https://www.data-vault.co.uk/what-is-data-vault/)
+- [dbt Data Vault Package](https://github.com/Datavault-UK/automate-dv)
+
 ## Schema Design
 
 ### Raw Vault
@@ -36,9 +60,10 @@ This dbt project implements a Data Vault 2.0 model with hubs, links, and satelli
 
 ## Setup
 
-1. Install dependencies:
+1. Install dependencies (from the repository root):
 ```bash
-pip install dbt-duckdb
+uv sync
+source .venv/bin/activate
 ```
 
 2. Initialize DuckDB with TPC-H data:
@@ -56,85 +81,3 @@ duckdb data_vault_20.duckdb < init_tpch.sql
 ```bash
 dbt run --profiles-dir .
 ```
-
-## Querying the Model
-
-Data Vault models are designed for flexibility but require more joins. Use the business vault for simpler queries:
-
-### 1. Total revenue by customer market segment (using business vault)
-```sql
-SELECT
-    market_segment,
-    SUM(line_total) as total_revenue,
-    COUNT(DISTINCT order_key) as order_count
-FROM bv_order_details
-GROUP BY market_segment
-ORDER BY total_revenue DESC;
-```
-
-### 2. Top 10 products by revenue (using business vault)
-```sql
-SELECT
-    part_name,
-    brand,
-    part_type,
-    SUM(line_total) as revenue
-FROM bv_order_details
-GROUP BY part_name, brand, part_type
-ORDER BY revenue DESC
-LIMIT 10;
-```
-
-### 3. Query the raw vault directly (more complex)
-```sql
--- Example: Customer order count
-SELECT
-    hc.customer_key,
-    sc.customer_name,
-    COUNT(DISTINCT ho.order_key) as order_count
-FROM hub_customer hc
-JOIN sat_customer sc ON hc.customer_hashkey = sc.customer_hashkey
-JOIN link_order_customer loc ON hc.customer_hashkey = loc.customer_hashkey
-JOIN hub_order ho ON loc.order_hashkey = ho.order_hashkey
-GROUP BY hc.customer_key, sc.customer_name
-ORDER BY order_count DESC
-LIMIT 10;
-```
-
-### 4. Historical tracking example (if we had multiple loads)
-```sql
--- See how customer attributes changed over time
-SELECT
-    hc.customer_key,
-    sc.customer_name,
-    sc.account_balance,
-    sc.load_date,
-    sc.hashdiff
-FROM hub_customer hc
-JOIN sat_customer sc ON hc.customer_hashkey = sc.customer_hashkey
-WHERE hc.customer_key = 12345
-ORDER BY sc.load_date;
-```
-
-## Key Observations
-
-**Strengths:**
-- Highly flexible and adaptable to source changes
-- Built-in audit trail (load_date, record_source)
-- Can track full history (with proper loading processes)
-- Parallel loading capabilities
-- Separation of business keys from attributes
-
-**Challenges:**
-- More complex queries (many joins required)
-- Steeper learning curve
-- Need business vault or mart layer for BI tools
-- More tables to manage
-- Hash key generation adds processing overhead
-
-**When to Use:**
-- Enterprise data warehouses with many sources
-- When auditability is critical
-- When data structures change frequently
-- When you need complete historical tracking
-- When parallel loading is important

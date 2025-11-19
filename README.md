@@ -10,33 +10,46 @@ Welcome to the Data Modeling Skill Boost training session! This hands-on worksho
 
 This training uses the **TPC-H benchmark dataset** (a standard dataset for database benchmarking) to implement three different modeling techniques:
 
-1. **Dimensional Modeling** (Kimball)
-2. **Data Vault 2.0**
-3. **One Big Table (OBT)**
+1. **Dimensional Modeling** (Kimball) - Star schema with facts and dimensions
+2. **Data Vault 2.0** - Flexible, auditable enterprise data warehouse
+3. **One Big Table (OBT)** - Fully denormalized approach
 
-Each technique is implemented as a separate dbt project using DuckDB with the TPC-H extension. You'll write queries against each model to answer business questions and compare the experience across approaches.
-
-## Prerequisites
-
-- Basic understanding of SQL
-- Familiarity with data warehousing concepts (helpful but not required)
-- No local setup needed - use GitHub Codespaces!
+Each technique is implemented as a separate dbt project using DuckDB. You'll write queries against each model to answer business questions and compare the experience across approaches.
 
 ## Getting Started
 
 ### Option 1: GitHub Codespaces (Recommended)
-Click the "Open in GitHub Codespaces" badge above. Everything is pre-configured!
+
+Click the "Open in GitHub Codespaces" badge above. Everything is pre-configured and will be ready in 3-5 minutes!
+
+The setup automatically:
+- Installs uv and all dependencies
+- Creates three DuckDB databases with TPC-H data
+- Configures the Python environment
 
 ### Option 2: Local Setup
-```bash
-# Install dbt-duckdb
-pip install dbt-duckdb
 
-# Each modeling technique has its own directory
-cd dimensional-modeling
-dbt deps
-dbt seed
-dbt run
+**Prerequisites:**
+- Python 3.11 or higher
+- Git
+
+**Installation:**
+
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd skill-boost-data-modeling
+
+# Install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install dependencies
+uv sync
+
+# Activate the virtual environment
+source .venv/bin/activate
+
+# Follow the setup instructions in each project directory to initialize data and run dbt
 ```
 
 ## Project Structure
@@ -46,72 +59,17 @@ dbt run
 ├── dimensional-modeling/    # Star schema implementation
 ├── data-vault-20/          # Data Vault 2.0 implementation
 ├── one-big-table/          # Denormalized OBT implementation
-└── questions/              # Business questions to answer
+├── questions/              # Business questions to answer
+└── pyproject.toml          # Python dependencies
 ```
 
 ## The Three Modeling Techniques
 
-### 1. Dimensional Modeling (Kimball Approach)
+Each modeling approach directory contains detailed information about the philosophy, benefits, drawbacks, and references. Explore each to understand the trade-offs:
 
-**Philosophy**: Organize data into facts (measurements) and dimensions (context).
-
-**Structure**:
-- Fact tables: Store quantitative metrics (e.g., orders, line items)
-- Dimension tables: Store descriptive attributes (e.g., customers, products, dates)
-- Star schema: Facts at center, dimensions surround
-
-**Benefits**:
-- Intuitive for business users
-- Optimized for analytical queries
-- Well-understood by BI tools
-
-**References**:
-- [The Data Warehouse Toolkit](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/books/data-warehouse-dw-toolkit/) by Ralph Kimball
-- [Kimball Dimensional Modeling Techniques](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/)
-
-### 2. Data Vault 2.0
-
-**Philosophy**: Create a flexible, auditable, and scalable enterprise data warehouse that preserves history.
-
-**Structure**:
-- **Hubs**: Unique business keys (e.g., Customer, Product)
-- **Links**: Relationships between hubs (e.g., Order to Customer)
-- **Satellites**: Descriptive attributes with history tracking
-
-**Benefits**:
-- Highly flexible and adaptable to change
-- Complete historical tracking
-- Parallel loading capabilities
-- Audit trail built-in
-
-**References**:
-- [Building a Scalable Data Warehouse with Data Vault 2.0](https://danlinstedt.com/) by Dan Linstedt
-- [Data Vault 2.0 Overview](https://www.data-vault.co.uk/what-is-data-vault/)
-- [dbt Data Vault Package](https://github.com/Datavault-UK/automate-dv)
-
-### 3. One Big Table (OBT)
-
-**Philosophy**: Denormalize everything into a single wide table for maximum query simplicity.
-
-**Structure**:
-- Single table with all dimensions and facts combined
-- Pre-joined for analysis
-- Column-oriented storage optimized
-
-**Benefits**:
-- Simplest possible queries (SELECT * FROM...)
-- No joins required
-- Fast for specific analytical patterns
-- Works well with modern columnar databases
-
-**Drawbacks**:
-- Data duplication
-- More complex ETL
-- Potential for stale data
-
-**References**:
-- [One Big Table](https://www.holistics.io/blog/one-big-table-obt/) - Holistics Blog
-- [The Wide Table Paradigm](https://www.startdataengineering.com/post/when-to-use-wide-tables/)
+- **dimensional-modeling/** - Star schema with facts and dimensions (Kimball approach)
+- **data-vault-20/** - Flexible, auditable enterprise warehouse with hubs, links, and satellites
+- **one-big-table/** - Fully denormalized single table approach
 
 ## Training Exercises
 
@@ -133,6 +91,11 @@ The TPC-H dataset simulates a wholesale supplier database with:
 - **PartSupp**: Parts supplied by suppliers with pricing
 - **Nation**: Nations/countries
 - **Region**: Geographic regions
+
+Scale factor 0.1 generates approximately:
+- 15,000 customers
+- 150,000 orders
+- 600,000 line items
 
 ## Additional Resources
 

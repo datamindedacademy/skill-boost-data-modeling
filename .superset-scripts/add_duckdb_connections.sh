@@ -51,7 +51,7 @@ add_database() {
     "allow_ctas": true,
     "allow_cvas": true,
     "allow_dml": true,
-    "allow_run_async": true,
+    "allow_run_async": false,
     "cache_timeout": null,
     "extra": "{\"allows_virtual_table_explore\": true}",
     "impersonate_user": false,

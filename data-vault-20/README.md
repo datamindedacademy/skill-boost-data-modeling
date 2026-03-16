@@ -48,6 +48,9 @@ Create a flexible, auditable, and scalable enterprise data warehouse that preser
 - `sat_supplier`: Supplier attributes
 - `sat_lineitem`: Line item attributes and measures
 
+### Business Vault
+- `bv_order_details`: Denormalized view joining all components for analysis (includes current CRM loyalty tier, customer/supplier geography)
+
 ### Seed Data
 - `crm_customers`: Customer loyalty data from a simulated CRM system
 

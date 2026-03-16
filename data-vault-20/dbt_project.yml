@@ -24,3 +24,5 @@ models:
         +materialized: table
       satellites:
         +materialized: table
+    business_vault:
+      +materialized: view

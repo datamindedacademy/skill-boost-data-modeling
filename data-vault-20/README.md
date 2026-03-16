@@ -41,20 +41,26 @@ Create a flexible, auditable, and scalable enterprise data warehouse that preser
 - `link_lineitem`: Order-Part-Supplier relationship (line items)
 
 **Satellites** (Descriptive Attributes):
-- `sat_customer`: Customer attributes
+- `sat_customer`: Customer attributes (source: TPC-H)
+- `sat_customer_crm`: Customer loyalty data (source: CRM) - tracks loyalty tier changes over time with `load_date` and `valid_to`
 - `sat_order`: Order attributes
 - `sat_part`: Part attributes
+- `sat_supplier`: Supplier attributes
 - `sat_lineitem`: Line item attributes and measures
 
-### Business Vault
-- `bv_order_details`: Denormalized view joining all components for analysis
+### Seed Data
+- `crm_customers`: Customer loyalty data from a simulated CRM system
+
+### Multi-Source Integration
+
+This project demonstrates a key Data Vault strength: integrating data from multiple source systems. `hub_customer` unifies customer keys from both TPC-H and CRM, while each source has its own satellite (`sat_customer` for TPC-H attributes, `sat_customer_crm` for loyalty data). This separation means new sources can be added without modifying existing structures.
 
 ## Key Data Vault Concepts
 
 1. **Hubs**: Store unique business keys only
 2. **Links**: Store relationships between hubs (many-to-many)
 3. **Satellites**: Store descriptive attributes and track history via hashdiff
-4. **Hash Keys**: MD5 hashes used for joining (deterministic, consistent)
+4. **Hash Keys**: SHA-256 hashes used for joining (deterministic, collision-resistant)
 5. **Load Date**: Every record tracks when it was loaded
 6. **Record Source**: Every record tracks where it came from
 

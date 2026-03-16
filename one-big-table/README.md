@@ -30,7 +30,11 @@ Denormalize everything into a single wide table for maximum query simplicity. Th
 - `obt_orders`: One wide table with all data pre-joined
   - Grain: One row per line item
   - Contains all customer, order, part, supplier, and geographic attributes
+  - Includes CRM loyalty data (`customer_loyalty_tier`) resolved to the tier at order time via date-range join
   - All measures and calculated fields included
+
+### Seed Data
+- `crm_customers`: Customer loyalty data from a simulated CRM system, pre-joined into `obt_orders`
 
 ## The OBT Philosophy
 

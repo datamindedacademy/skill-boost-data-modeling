@@ -15,7 +15,7 @@ with source as (
 )
 
 select
-    md5(cast(order_key as varchar)) as order_hashkey,
+    hex(sha256(cast(order_key as varchar))) as order_hashkey,
     load_date,
     order_status,
     total_price,
@@ -25,7 +25,7 @@ select
     ship_priority,
     comment,
     record_source,
-    md5(concat(
+    hex(sha256(concat(
         coalesce(order_status, ''),
         coalesce(cast(total_price as varchar), ''),
         coalesce(cast(order_date as varchar), ''),
@@ -33,5 +33,5 @@ select
         coalesce(clerk, ''),
         coalesce(cast(ship_priority as varchar), ''),
         coalesce(comment, '')
-    )) as hashdiff
+    ))) as hashdiff
 from source

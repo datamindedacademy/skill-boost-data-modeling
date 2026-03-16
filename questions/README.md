@@ -20,7 +20,7 @@ This directory contains business questions to answer using each modeling techniq
 
 **Hints**:
 - Dimensional: Use `fact_line_item` joined with `dim_customer`
-- Data Vault: Use the `bv_order_details` business vault view
+- Data Vault: Join through hubs, links, and satellites to reach customer geography
 - OBT: Query `obt_orders` directly
 
 ---
@@ -34,7 +34,7 @@ This directory contains business questions to answer using each modeling techniq
 
 **Hints**:
 - Dimensional: Join `fact_line_item` with `dim_part`
-- Data Vault: Use `bv_order_details` or join hubs/satellites
+- Data Vault: Join `link_lineitem` through `hub_part` to `sat_part`
 - OBT: Simple aggregation on `obt_orders`
 
 ---
@@ -49,7 +49,7 @@ This directory contains business questions to answer using each modeling techniq
 
 **Hints**:
 - Dimensional: May need to join with `dim_date` or extract from fact table
-- Data Vault: Extract from satellite or business vault
+- Data Vault: Extract date attributes from `sat_order`
 - OBT: Pre-calculated date parts available directly
 
 ---
@@ -109,9 +109,41 @@ This tests the flexibility of each approach!
 
 ---
 
+### Question 9: Multi-Source Integration
+**Business Need**: The CRM team has shared customer loyalty data. Show total revenue and order count by loyalty tier (Bronze, Silver, Gold, Platinum).
+
+**What to consider**:
+- How does each model integrate the CRM data alongside the TPC-H order data?
+- How do you handle customers that don't have CRM records?
+- In the Data Vault, notice how `hub_customer` integrates keys from both sources, and each source has its own satellite (`sat_customer` for TPC-H, `sat_customer_crm` for CRM)
+
+**Hints**:
+- Dimensional: Query `dim_customer` (which now includes CRM fields) joined with `fact_line_item`. Use `is_current = true` for the current loyalty tier.
+- Data Vault: Join through `hub_customer` to `sat_customer_crm`, taking the latest record per customer (highest `load_date`)
+- OBT: Query `obt_orders` using `customer_current_loyalty_tier`
+
+---
+
+### Question 10: Slowly Changing Dimensions (SCD Type 2)
+**Business Need**: Some customers changed loyalty tiers during the period. Show total revenue earned while customers were in each loyalty tier. Each order should be attributed to the tier the customer held **at the time of the order**.
+
+**What to consider**:
+- How does each model handle historical attribute changes?
+- Does the query naturally account for the correct tier at each point in time?
+- Which model makes this easiest? Which makes it hardest?
+
+**Hints**:
+- Dimensional: `dim_customer` is an SCD Type 2 dimension with `valid_from`/`valid_to` columns. Join `fact_line_item` to `dim_customer` on `customer_id` AND `order_date BETWEEN valid_from AND valid_to`, then group by `loyalty_tier`.
+- Data Vault: `sat_customer_crm` stores each tier change as a separate row with `load_date` and `valid_to`. Join through `hub_customer` to `sat_customer_crm` with a point-in-time filter on the order date.
+- OBT: `customer_loyalty_tier` already contains the correct tier at order time (the date-range join was done during ETL). Just group by it.
+
+This question highlights a key trade-off: OBT hides complexity in ETL (trivial to query), dimensional modeling exposes SCD2 to the analyst (moderate query complexity), and Data Vault requires navigating hub-satellite joins with temporal logic (most complex query).
+
+---
+
 ## Sample Answers
 
-See the `sample-answers/` directory for example queries for each question in each modeling technique. Try to write your own first before looking at the samples!
+Check out the `solutions` branch for sample answers to all exercises.
 
 
 ## Resources

@@ -15,7 +15,7 @@ with source as (
 )
 
 select
-    md5(cast(customer_key as varchar)) as customer_hashkey,
+    hex(sha256(cast(customer_key as varchar))) as customer_hashkey,
     load_date,
     customer_name,
     address,
@@ -25,7 +25,7 @@ select
     market_segment,
     comment,
     record_source,
-    md5(concat(
+    hex(sha256(concat(
         coalesce(customer_name, ''),
         coalesce(address, ''),
         coalesce(cast(nation_key as varchar), ''),
@@ -33,5 +33,5 @@ select
         coalesce(cast(account_balance as varchar), ''),
         coalesce(market_segment, ''),
         coalesce(comment, '')
-    )) as hashdiff
+    ))) as hashdiff
 from source

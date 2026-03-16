@@ -30,10 +30,13 @@ Organize data into facts (measurements) and dimensions (context). The star schem
 - `fact_orders`: Grain is one row per order (aggregated)
 
 ### Dimension Tables
-- `dim_customer`: Customer attributes with geographic hierarchy
+- `dim_customer`: Customer attributes with geographic hierarchy and CRM loyalty data (**SCD Type 2** - multiple rows per customer tracking loyalty tier changes over time, with `valid_from`, `valid_to`, and `is_current` columns)
 - `dim_part`: Product/part catalog
 - `dim_supplier`: Supplier information with geographic hierarchy
 - `dim_date`: Date dimension for time-based analysis
+
+### Seed Data
+- `crm_customers`: Customer loyalty data from a simulated CRM system, integrated into `dim_customer`
 
 ## Setup
 

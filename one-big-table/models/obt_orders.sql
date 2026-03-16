@@ -1,5 +1,6 @@
 -- One Big Table: All order and line item data fully denormalized
 -- Every row represents a line item with all related dimensional attributes pre-joined
+-- CRM loyalty tier is resolved to the tier held at the time of the order (SCD2 join)
 select
     -- Line Item Identifiers
     li.l_orderkey as order_key,
@@ -29,6 +30,12 @@ select
     -- Customer Geography
     cn.n_name as customer_nation,
     cr.r_name as customer_region,
+
+    -- Customer CRM Attributes (loyalty tier at time of order, and current)
+    crm.loyalty_tier as customer_loyalty_tier,
+    crm_current.loyalty_tier as customer_current_loyalty_tier,
+    crm.preferred_channel as customer_preferred_channel,
+    crm.signup_date as customer_crm_signup_date,
 
     -- Part/Product Attributes
     p.p_partkey as part_key,
@@ -88,3 +95,12 @@ inner join {{ source('tpch', 'part') }} p on li.l_partkey = p.p_partkey
 inner join {{ source('tpch', 'supplier') }} s on li.l_suppkey = s.s_suppkey
 inner join {{ source('tpch', 'nation') }} sn on s.s_nationkey = sn.n_nationkey
 inner join {{ source('tpch', 'region') }} sr on sn.n_regionkey = sr.r_regionkey
+-- CRM data: join to the loyalty tier valid at the time of the order
+left join {{ ref('crm_customers') }} crm
+    on c.c_custkey = crm.customer_key
+    and o.o_orderdate >= cast(crm.valid_from as date)
+    and o.o_orderdate < cast(crm.valid_to as date)
+-- CRM data: current loyalty tier (latest record)
+left join {{ ref('crm_customers') }} crm_current
+    on c.c_custkey = crm_current.customer_key
+    and cast(crm_current.valid_to as date) = cast('9999-12-31' as date)

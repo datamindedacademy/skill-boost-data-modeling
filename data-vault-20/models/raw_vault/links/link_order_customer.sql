@@ -9,12 +9,12 @@ with source as (
 )
 
 select
-    md5(concat(
-        md5(cast(order_key as varchar)),
-        md5(cast(customer_key as varchar))
-    )) as order_customer_hashkey,
-    md5(cast(order_key as varchar)) as order_hashkey,
-    md5(cast(customer_key as varchar)) as customer_hashkey,
+    hex(sha256(concat(
+        hex(sha256(cast(order_key as varchar))),
+        hex(sha256(cast(customer_key as varchar)))
+    ))) as order_customer_hashkey,
+    hex(sha256(cast(order_key as varchar))) as order_hashkey,
+    hex(sha256(cast(customer_key as varchar))) as customer_hashkey,
     load_date,
     record_source
 from source

@@ -8,7 +8,7 @@ with source as (
 )
 
 select
-    md5(cast(supplier_key as varchar)) as supplier_hashkey,
+    hex(sha256(cast(supplier_key as varchar))) as supplier_hashkey,
     supplier_key,
     load_date,
     record_source

@@ -16,7 +16,7 @@ with source as (
 )
 
 select
-    md5(cast(part_key as varchar)) as part_hashkey,
+    hex(sha256(cast(part_key as varchar))) as part_hashkey,
     load_date,
     part_name,
     manufacturer,
@@ -27,7 +27,7 @@ select
     retail_price,
     comment,
     record_source,
-    md5(concat(
+    hex(sha256(concat(
         coalesce(part_name, ''),
         coalesce(manufacturer, ''),
         coalesce(brand, ''),
@@ -36,5 +36,5 @@ select
         coalesce(container, ''),
         coalesce(cast(retail_price as varchar), ''),
         coalesce(comment, '')
-    )) as hashdiff
+    ))) as hashdiff
 from source

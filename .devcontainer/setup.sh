@@ -34,6 +34,7 @@ CALL dbgen(sf = 0.1);
 EOF
 duckdb dimensional_modeling.duckdb < init_tpch.sql
 rm init_tpch.sql
+dbt seed --profiles-dir .
 cd ..
 
 # Data Vault 2.0
@@ -46,6 +47,7 @@ CALL dbgen(sf = 0.1);
 EOF
 duckdb data_vault_20.duckdb < init_tpch.sql
 rm init_tpch.sql
+dbt seed --profiles-dir .
 cd ..
 
 # One Big Table
@@ -58,6 +60,7 @@ CALL dbgen(sf = 0.1);
 EOF
 duckdb one_big_table.duckdb < init_tpch.sql
 rm init_tpch.sql
+dbt seed --profiles-dir .
 cd ..
 
 echo "✅ Environment setup complete!"
@@ -66,9 +69,9 @@ echo "📚 Next steps:"
 echo "  1. Read the main README.md for an overview"
 echo "  2. Explore each modeling technique directory"
 echo "  3. Run dbt for each project:"
-echo "     cd dimensional-modeling && dbt run --profiles-dir ."
-echo "     cd data-vault-20 && dbt run --profiles-dir ."
-echo "     cd one-big-table && dbt run --profiles-dir ."
+echo "     cd dimensional-modeling && dbt seed --profiles-dir . && dbt run --profiles-dir ."
+echo "     cd data-vault-20 && dbt seed --profiles-dir . && dbt run --profiles-dir ."
+echo "     cd one-big-table && dbt seed --profiles-dir . && dbt run --profiles-dir ."
 echo "  4. Try the exercises in the questions/ directory"
 echo ""
 echo "Happy modeling! 🎉"

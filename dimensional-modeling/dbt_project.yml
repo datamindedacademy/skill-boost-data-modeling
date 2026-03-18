@@ -13,6 +13,11 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
+on-run-start:
+  - "INSTALL tpch"
+  - "LOAD tpch"
+  - "CALL dbgen(sf = 0.1, overwrite = true)"
+
 models:
   dimensional_modeling:
     staging:

@@ -59,7 +59,8 @@ EOF
 duckdb dimensional_modeling.duckdb < init_tpch.sql
 ```
 
-3. Run dbt:
+3. Load seed data and run dbt:
 ```bash
+dbt seed --profiles-dir .
 dbt run --profiles-dir .
 ```
